@@ -3,17 +3,66 @@ from matrix import *
 from math import *
 
 def add_box( points, x, y, z, width, height, depth ):
-    pass
+    x_gen = [ x, x + width ]
+    y_gen = [ y, y + height ]
+    z_gen = [ z, z + depth ]
+
+    for x in x_gen:
+        for y in y_gen:
+            for z in z_gen:
+                add_edge( points, x, y, z, x + 1, y + 1, z + 1 )
 
 def add_sphere( points, cx, cy, cz, r, step ):
-    pass
-def generate_sphere( points, cx, cy, cz, r, step ):
-    pass
+    genSphere = [ ]
+    generate_sphere( genSphere, cx, cy, cz, r, step )
+    for point in genSphere:
+        x = point[0]
+        y = point[1]
+        z = point[2]
+        add_edge( points, x, y, z, x + 1, y + 1, z + 1 )
 
+def generate_sphere( points, cx, cy, cz, r, step ):
+    theta = 0
+    phi = 0
+    end = int( 1 / step )
+
+    while phi <= end:
+        p = phi * step
+        while theta <= end:
+            t = theta * step
+            x = r * math.cos( math.pi * t ) + cx
+            y = r * math.sin( math.pi * t ) * math.cos( 2*math.pi * p ) + cy
+            z = r * math.sin( math.pi * t ) * math.sin( 2*math.pi * p ) + cz
+            add_point( points, x, y, z )
+            theta += 1
+        theta = 0
+        phi += 1    
+            
 def add_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    genTorus = [ ]
+    generate_torus( genTorus, cx, cy, cz, r0, r1, step )
+    for point in genTorus:
+        x = point[0]
+        y = point[1]
+        z = point[2]
+        add_edge( points, x, y, z, x + 1, y + 1, z + 1 )
+
 def generate_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    theta = 0
+    phi = 0
+    end = int( 1 / step )
+
+    while phi <= end:
+        p = phi * step
+        while theta <= end:
+            t = theta * step
+            x = math.cos( 2*math.pi * p ) * ( r0 * math.cos( 2*math.pi * t ) + r1 ) + cx
+            y = r0 * math.sin( 2*math.pi * p ) + cy
+            z = -math.sin( 2*math.pi * p ) * ( r0 * math.cos( 2*math.pi * t ) + r1 ) + cz
+            add_point( points, x, y, z )
+            theta += 1
+        theta = 0
+        phi += 1
 
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
