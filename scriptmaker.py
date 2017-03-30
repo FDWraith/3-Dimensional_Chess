@@ -10,11 +10,14 @@ with open("script", "w") as fd:
         end += "ident\n"
         end += "rotate\n y 20\n"
         end += "rotate\n z 20\n"
+        end += "rotate\n x %f\n"%(i*5)
         end += "apply\n"
         end += "sphere\n0 0 0 80\n"
         end += "ident\n"
         end += "move\n 250 250 0\n"
         end += "apply\n"
-        end += "save\n anim/num%d.png\n"%(i)
-
+        if i < 10:
+            end += "save\n anim/00%d.png\n"%(i)
+        else:
+            end += "save\n anim/0%d.png\n"%(i)
     print end
